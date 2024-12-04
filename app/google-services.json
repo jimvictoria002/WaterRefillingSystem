@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "170710780130",
+    "project_id": "waterrefillingapp-a6a0e",
+    "storage_bucket": "waterrefillingapp-a6a0e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170710780130:android:1c61889cbf2011f318f6bb",
+        "android_client_info": {
+          "package_name": "com.example.waterrefilling"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeMzHUwgcx7v3XTRV8Y-WK7dCfCogw9mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
