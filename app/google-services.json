@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "170710780130",
-    "project_id": "waterrefillingapp-a6a0e",
-    "storage_bucket": "waterrefillingapp-a6a0e.firebasestorage.app"
+    "project_number": "429532561610",
+    "project_id": "water-refilling-station-f1632",
+    "storage_bucket": "water-refilling-station-f1632.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:170710780130:android:1c61889cbf2011f318f6bb",
+        "mobilesdk_app_id": "1:429532561610:android:3e59f98d5bccbc7aa97433",
         "android_client_info": {
-          "package_name": "com.example.waterrefilling"
+          "package_name": "com.advento.waterrefillingsystem"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAeMzHUwgcx7v3XTRV8Y-WK7dCfCogw9mg"
+          "current_key": "AIzaSyCr4g0omnYSEMB2t97WzdraxzgKK0YNv3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429532561610:android:b615288728894faca97433",
+        "android_client_info": {
+          "package_name": "com.lu.waterrefilling"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr4g0omnYSEMB2t97WzdraxzgKK0YNv3g"
         }
       ],
       "services": {

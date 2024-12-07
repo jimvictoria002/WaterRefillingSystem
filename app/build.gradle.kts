@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.waterrefilling"
+    namespace = "com.lu.waterrefilling"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.waterrefilling"
+        applicationId = "com.lu.waterrefilling"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -47,4 +47,5 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.cardview)
     implementation(libs.picasso)
+    implementation(libs.material)
 }

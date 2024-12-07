@@ -1,22 +1,30 @@
-package com.example.waterrefilling;
+package com.lu.waterrefilling;
 
 public class WaterProduct {
-    private int  quantity = 1, imageResourceId; // Add imageResourceId to store drawable resource ID
-    private double price;
-    private String name, orderBy, id;
+    private int quantity = 1;
+    private String price; // Changed to String to match Firestore data
+    private String name;
+    private String orderBy;
+    private String id;
+    private String imageUrl;
 
     public WaterProduct() {}
 
-    public WaterProduct(int price, int quantity, String name, String orderBy, int imageResourceId) {
+    public WaterProduct(String price, int quantity, String name, String orderBy) {
         this.price = price;
         this.quantity = quantity;
         this.name = name;
         this.orderBy = orderBy;
-        this.imageResourceId = imageResourceId; // Initialize the image resource ID
     }
 
     // Getters and setters
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getId() {
         return id;
@@ -26,11 +34,11 @@ public class WaterProduct {
         this.id = id;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -58,20 +66,12 @@ public class WaterProduct {
         this.orderBy = orderBy;
     }
 
-    public int getImageResourceId() {
-        return imageResourceId;
-    }
-
-    public void setImageResourceId(int imageResourceId) {
-        this.imageResourceId = imageResourceId;
-    }
-
     @Override
     public String toString() {
         return "WaterProduct{" +
-                "price=" + price +
+                "price='" + price + '\'' +
                 ", quantity=" + quantity +
-                ", imageResourceId=" + imageResourceId +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", name='" + name + '\'' +
                 ", orderBy='" + orderBy + '\'' +
                 '}';

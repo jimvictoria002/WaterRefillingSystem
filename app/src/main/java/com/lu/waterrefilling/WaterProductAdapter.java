@@ -1,4 +1,4 @@
-package com.example.waterrefilling;
+package com.lu.waterrefilling;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 
 
 public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHolder> {
@@ -25,6 +30,7 @@ public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHo
     User user;
 
     MainContainerActivity mca;
+
     public WaterProductAdapter(Context context, List<WaterProduct> waterProductsList, MainContainerActivity mca) {
         this.context = context;
         this.waterProductsList = waterProductsList;
@@ -42,28 +48,44 @@ public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHo
     public void onBindViewHolder(@NonNull WaterProductViewHolder holder, int position) {
         WaterProduct waterProduct = waterProductsList.get(position);
 
-        if(user.getRole().equals("admin")){
+        if (user.getRole().equals("admin")) {
             holder.editButton.setVisibility(View.VISIBLE);
             holder.orderButton.setVisibility(View.GONE);
             holder.decreaseButton.setVisibility(View.GONE);
             holder.increaseButton.setVisibility(View.GONE);
             holder.totalText.setVisibility(View.GONE);
             holder.quantityText.setVisibility(View.GONE);
-        }else{
+            holder.paymentMode.setVisibility(View.GONE);
+        } else {
             holder.orderButton.setVisibility(View.VISIBLE);
             holder.editButton.setVisibility(View.GONE);
             holder.decreaseButton.setVisibility(View.VISIBLE);
             holder.increaseButton.setVisibility(View.VISIBLE);
             holder.totalText.setVisibility(View.VISIBLE);
             holder.quantityText.setVisibility(View.VISIBLE);
+            holder.paymentMode.setVisibility(View.VISIBLE);
+
         }
 
         holder.productName.setText(waterProduct.getName());
         holder.priceText.setText("Price: " + waterProduct.getPrice() + " Php");
         holder.quantityText.setText(String.valueOf(waterProduct.getQuantity()));
-        holder.productImage.setImageResource(waterProduct.getImageResourceId());
+        holder.imageProgressBar.setVisibility(View.VISIBLE); // Show ProgressBar when loading starts
+        Picasso.get()
+                .load(waterProduct.getImageUrl())
+                .into(holder.productImage, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.imageProgressBar.setVisibility(View.GONE); // Hide on success
+                    }
 
-        double total = waterProduct.getPrice() * waterProduct.getQuantity();
+                    @Override
+                    public void onError(Exception e) {
+                        holder.imageProgressBar.setVisibility(View.GONE); // Hide on error
+                    }
+                });
+
+        double total = Integer.parseInt(waterProduct.getPrice()) * waterProduct.getQuantity();
         holder.totalText.setText("Total: " + total + " Php");
 
         // Update quantity handlers
@@ -82,9 +104,68 @@ public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHo
         });
 
 
-        holder.editButton.setOnClickListener(v ->{
+        holder.editButton.setOnClickListener(v -> {
             mca.replaceFragment(new EditWaterProduct(waterProduct));
         });
+
+        if(user.getRole().equals("admin")){
+            holder.deleteButton.setVisibility(View.VISIBLE);
+
+            holder.deleteButton.setOnClickListener(v -> {
+                new MaterialAlertDialogBuilder(context)
+                        .setTitle("Delete water product")
+                        .setMessage("Are you sure you want to delete this water product?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            holder.deleteButton.setEnabled(false);
+                            holder.progressBar.setVisibility(View.VISIBLE);
+                            // Get the document ID and image URL
+                            String docId = waterProduct.getId();
+                            String imageUrl = waterProduct.getImageUrl();  // Assuming the image URL is stored in the document
+
+                            // Reference the Firestore document
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference docRef = db.collection("water_products").document(docId);
+
+                            // Reference the image in Firebase Storage
+                            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+
+                            // Delete the image from Firebase Storage
+                            storageRef.delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        // Image deleted successfully, now delete the document from Firestore
+                                        docRef.delete()
+                                                .addOnSuccessListener(aVoid1 -> {
+                                                    // Document successfully deleted
+                                                    Toast.makeText(context, "Product deleted", Toast.LENGTH_SHORT).show();
+                                                    holder.progressBar.setVisibility(View.GONE);
+
+                                                    mca.replaceFragment(new ProductsFragment());
+
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    // Error deleting document
+                                                    holder.progressBar.setVisibility(View.GONE);
+
+                                                    Toast.makeText(context, "Error deleting water product document", Toast.LENGTH_SHORT).show();
+                                                });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        holder.progressBar.setVisibility(View.GONE);
+
+                                        // Error deleting image from Firebase Storage
+                                        Toast.makeText(context, "Error deleting image", Toast.LENGTH_SHORT).show();
+                                    });
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            });
+
+        }else {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
+
+
 
         // Handle the order button
         holder.orderButton.setOnClickListener(v -> {
@@ -111,8 +192,11 @@ public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHo
                             order.put("quantity", waterProduct.getQuantity());
                             order.put("total", total);
                             order.put("orderBy", user.getFullname());
+                            order.put("userId", user.getId());
                             order.put("address", user.getAddress());
-                            order.put("order_at", System.currentTimeMillis());
+                            order.put("isPaid", false);
+                            order.put("status", "pending");
+                            order.put("orderAt", System.currentTimeMillis());
 
                             // Send order to Firestore
                             db.collection("orders")
@@ -135,8 +219,6 @@ public class WaterProductAdapter extends RecyclerView.Adapter<WaterProductViewHo
             }
         });
     }
-
-
 
 
     @Override

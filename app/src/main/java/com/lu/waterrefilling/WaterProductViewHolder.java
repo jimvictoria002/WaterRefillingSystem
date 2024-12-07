@@ -1,4 +1,4 @@
-package com.example.waterrefilling;
+package com.lu.waterrefilling;
 
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +15,13 @@ public class WaterProductViewHolder extends RecyclerView.ViewHolder {
     public ImageView productImage;
     public TextView productName;
     public TextView priceText;
-    public TextView quantityText;
+    public TextView quantityText, paymentMode;
     public TextView totalText;
     public Button decreaseButton;
     public Button increaseButton;
     public Button orderButton;
-    public Button editButton;
-    public ProgressBar progressBar;
+    public Button editButton, deleteButton;
+    public ProgressBar progressBar, imageProgressBar;
 
     public WaterProductViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -37,5 +37,8 @@ public class WaterProductViewHolder extends RecyclerView.ViewHolder {
         orderButton = itemView.findViewById(R.id.btn_order_2);
         editButton = itemView.findViewById(R.id.edit_btn);
         progressBar = itemView.findViewById(R.id.progress_bar);
+        imageProgressBar = itemView.findViewById(R.id.image_progress_bar);
+        deleteButton = itemView.findViewById(R.id.delete_btn);
+        paymentMode = itemView.findViewById(R.id.tv_payment_mode);
     }
 }

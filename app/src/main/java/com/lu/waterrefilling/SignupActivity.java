@@ -1,4 +1,4 @@
-package com.example.waterrefilling;
+package com.lu.waterrefilling;
 
 import android.content.Intent;
 import android.os.Bundle;

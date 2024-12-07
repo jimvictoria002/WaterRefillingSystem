@@ -1,10 +1,11 @@
-package com.example.waterrefilling;
+package com.lu.waterrefilling;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,18 @@ public class ProductsFragment extends Fragment {
 
         // Fetch data from Firestore
         fetchWaterProducts();
-        Log.d("WaterProduct", String.valueOf(R.drawable.jug_without_faucet));
+
+        Button createBtn = view.findViewById(R.id.create_water_product);
+        String role = mca.user.getRole();
+
+        if (!role.equals("admin")) {
+            createBtn.setVisibility(View.GONE);
+        } else {
+            createBtn.setVisibility(View.VISIBLE);
+            createBtn.setOnClickListener(v -> {
+                mca.replaceFragment(new CreateWater());
+            });
+        }
 
 
         return view;
