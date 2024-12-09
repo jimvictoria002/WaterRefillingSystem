@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.lu.waterrefilling"
+    namespace = "com.advento.waterrefilling"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.lu.waterrefilling"
+        applicationId = "com.advento.waterrefilling"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.lu.waterrefilling;
+package com.advento.waterrefilling;
 
 import org.junit.Test;
 
