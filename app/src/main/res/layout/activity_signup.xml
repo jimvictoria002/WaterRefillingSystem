@@ -9,16 +9,22 @@
     tools:context=".SignupActivity"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Signup Label -->
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/qd_logo"
+            android:layout_gravity="center"/>
         <TextView
             android:id="@+id/signup_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Sign Up"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -153,7 +159,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:backgroundTint="#277BCB"
             android:text="Sign Up"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/confirmpassword_input_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -168,17 +176,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Login Redirect -->
-        <TextView
-            android:id="@+id/login_redirect"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Already have an account? Login"
-            android:textColor="#0F3D8A"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/signup_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account?"/>
+
+            <TextView
+                android:id="@+id/login_redirect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text=" Login"
+                android:textColor="#0F3D8A"
+                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/signup_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
+    </LinearLayout>
 </ScrollView>
